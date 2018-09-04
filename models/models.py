@@ -1,5 +1,7 @@
 from datetime import datetime
 
+FoodItems = []
+FoodOrders = []
 class FoodItem:
 
     food_item_id=1
@@ -22,4 +24,37 @@ class FoodItem:
             date=str(self.date)
         )
 
-FoodItems = []
+    def get_by_id(self, food_id):
+        """ Fetch a food item by its id """
+        for food_item in FoodItems:
+            if food_item.id == food_id:
+                return food_item
+
+class FoodOrder:
+
+    food_order_id=1
+    def __init__(self, name=None, destination=None):
+        self.name = name
+        self.destination = destination
+        self.status = "pending"
+        self.date = datetime.now().replace(second=0, microsecond=0)
+        self.id = FoodOrder.food_order_id
+
+        FoodOrder.food_order_id += 1
+
+    def get_by_id(self, food_order_id):
+        """ get a food order by its id """
+        for food_order in FoodOrders:
+            if food_order.id == food_order_id:
+                return food_order
+
+
+    def serialize(self):
+        """ serialize a food order to a dictionary """
+        return dict(
+            id=self.id,
+            name=self.name,
+            destination=self.destination,
+            status=self.status,
+            date=str(self.date)
+        )
