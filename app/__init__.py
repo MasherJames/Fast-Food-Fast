@@ -16,12 +16,12 @@ def create_app(config_mode):
 
     from .customer import customer_blueprint as customer_bp
     customer = Api(customer_bp)
-    app.register_blueprint(customer_bp, url_prefix="/api/v1")
-
+    app.register_blueprint(customer_bp, url_prefix="/api/v1/fooditems")
 
     admin.add_resource(Foods, '/fooditems')
-    admin.add_resource(SpecificOrder, '/orders/<int:food_order_id>')
+    admin.add_resource(SpecificOrder, '/fooditems/orders/<int:food_order_id>')
 
-    customer.add_resource(PostOrders, '/orders/<int:food_id>')
+    customer.add_resource(PostOrders, '/<int:food_id>/orders')
     customer.add_resource(GetOrders, '/orders')
+
     return app
