@@ -48,7 +48,6 @@ class SignUp(Resource):
         user = User(username, email, password, bool(is_admin))
 
         users.append(user)
-        print(user.is_admin)
 
         return {"message": f"Account for {username} has been created successfully"}, 201
 
