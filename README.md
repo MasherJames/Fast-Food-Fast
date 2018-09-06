@@ -6,3 +6,4 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/9ca5e04757b359d7535e/maintainability)](https://codeclimate.com/github/MasherJames/Fast-Food-Fast/maintainability)
 [![GitHub issues](https://img.shields.io/github/issues/MasherJames/Fast-Food-Fast.svg)](https://github.com/MasherJames/Fast-Food-Fast/issues)
 [![PEP8](https://img.shields.io/badge/code%20style-pep8-orange.svg)](https://www.python.org/dev/peps/pep-0008/)
+[![Python 3.6](https://img.shields.io/badge/python-3.6-blue.svg)](https://www.python.org/downloads/release/python-360/)
