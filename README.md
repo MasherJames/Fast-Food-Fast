@@ -8,7 +8,7 @@
 
 # Fast Food Fast
 
-    Fast food fast is a food delivery application.
+Fast food fast is a food delivery application.
 
 ## How it Works
 
