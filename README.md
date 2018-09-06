@@ -32,3 +32,7 @@ Clone the repository below
 ```
 git clone git@github.com:MasherJames/Fast-Food-Fast.git
 ```
+
+### Create a virtual environment
+
+    virtualenv env --python=python3.6
