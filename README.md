@@ -41,4 +41,4 @@ git clone git@github.com:MasherJames/Fast-Food-Fast.git
 
 ### Install required Dependencies
 
-    `pip install -r requirements.txt`
+    pip install -r requirements.txt
