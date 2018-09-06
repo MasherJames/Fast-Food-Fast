@@ -36,9 +36,6 @@ class SignUp(Resource):
         if not validators.Validators().valid_password(password):
             return {"message": "Enter a valid password"}, 400
 
-        if type(is_admin) is not int:
-            return {"message": "value should be 0 or 1 only"}
-
         if is_admin not in range(0, 2):
             return {"message": "can only be 0 for normal user and 1 for admin"}, 400
 
