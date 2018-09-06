@@ -20,6 +20,11 @@ Fast food fast is a food delivery application.
 - A user gets notified on his/her order status
 - Accepted orders are delivered
 
+## Prerequisite
+
+    [Python3.6](https://www.python.org/downloads/release/python-365/)
+    [Virtua Environment](https://virtualenv.pypa.io/en/stable/installation/)
+
 # Installation and Setup
 
 Clone the repository below
