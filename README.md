@@ -38,3 +38,7 @@ git clone git@github.com:MasherJames/Fast-Food-Fast.git
     virtualenv env --python=python3.6
 
     source env/bin/activate
+
+### Install required Dependencies
+
+    `pip install -r requirements.txt`
