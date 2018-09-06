@@ -12,7 +12,3 @@ script:
 
 after_success:
   - coveralls
-
-plugins:
-  pep8:
-    enabled: true
