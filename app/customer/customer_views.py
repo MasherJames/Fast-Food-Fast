@@ -35,4 +35,4 @@ class GetOrders(Resource):
     @jwt_required
     def get(self):
         """ get all the orders """
-        return{"Food orders": [food_order.serialize() for food_order in FoodOrders]}
+        return{"Food orders": [food_order.serialize() for food_order in FoodOrders]}, 200
