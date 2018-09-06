@@ -19,3 +19,11 @@ Fast food fast is a food delivery application.
 - An Admin can accept or reject the order request from a user
 - A user gets notified on his/her order status
 - Accepted orders are delivered
+
+# Installation and Setup
+
+Clone the repository below
+
+```
+git clone git@github.com:MasherJames/Fast-Food-Fast.git
+```
