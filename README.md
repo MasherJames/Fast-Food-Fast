@@ -1,5 +1,3 @@
-# Fast-Food-Fast
-
 ![license](https://img.shields.io/github/license/mashape/apistatus.svg)
 [![Build Status](https://travis-ci.org/MasherJames/Fast-Food-Fast.svg?branch=develop)](https://travis-ci.org/MasherJames/Fast-Food-Fast)
 [![Coverage Status](https://coveralls.io/repos/github/MasherJames/Fast-Food-Fast/badge.svg?branch=develop)](https://coveralls.io/github/MasherJames/Fast-Food-Fast?branch=develop)
@@ -14,10 +12,10 @@
 
 ## How it Works
 
-    - An admin creates food items
-    - A normal user creates an account and can login
-    - A logged in user can view available food items created by the admin
-    - A user chooses on a food item and makes an order
-    - An Admin can accept or reject the order request from a user
-    - A user gets notified on his/her order status
-    - Accepted orders are delivered
+- An admin creates food items
+- A normal user creates an account and can login
+- A logged in user can view available food items created by the admin
+- A user chooses on a food item and makes an order
+- An Admin can accept or reject the order request from a user
+- A user gets notified on his/her order status
+- Accepted orders are delivered
