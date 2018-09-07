@@ -70,7 +70,7 @@ class User:
 
     user_id = 1
 
-    def __init__(self, username=None, email=None, password=None, is_admin=None):
+    def __init__(self, username=None, email=None, password=None, is_admin=False):
         self.username = username
         self.email = email
         if password:

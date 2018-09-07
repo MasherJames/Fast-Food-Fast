@@ -15,8 +15,6 @@ class SignUp(Resource):
                         help='This field cannot be left blank')
     parser.add_argument('password', type=str, required=True,
                         help='This field cannot be left blank')
-    parser.add_argument("is_admin", type=int, required=True,
-                        help='This field cannot be left blank')
 
     def post(self):
         """ SignUp a new user """
@@ -25,7 +23,6 @@ class SignUp(Resource):
         username = request_data['username']
         email = request_data['email']
         password = request_data['password']
-        is_admin = request_data['is_admin']
 
         if not validators.Validators().valid_username(username):
             return {"message": "Invalid username"}, 400
@@ -36,16 +33,13 @@ class SignUp(Resource):
         if not validators.Validators().valid_password(password):
             return {"message": "Enter a valid password"}, 400
 
-        if is_admin not in range(0, 2):
-            return {"message": "can only be 0 for normal user and 1 for admin"}, 400
-
         if User().get_by_username(username):
             return {"message": f"User with username {username} already exists"}, 400
 
         if User().get_by_email(email):
             return {"message": f"User with email {email} already exists"}, 400
 
-        user = User(username, email, password, bool(is_admin))
+        user = User(username, email, password)
 
         users.append(user)
 
@@ -73,6 +67,6 @@ class Login(Resource):
         if user and check_password_hash(user.password_hash, password):
             expires = datetime.timedelta(minutes=30)
             token = create_access_token(
-                user.username, user.is_admin, expires_delta=expires)
+                user.username, expires_delta=expires)
             return {'token': token, 'message': f'You were successfully logged in {username}'}, 200
         return {'message': 'user not found'}, 404
