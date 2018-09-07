@@ -42,3 +42,38 @@ git clone git@github.com:MasherJames/Fast-Food-Fast.git
 ### Install required Dependencies
 
     pip install -r requirements.txt
+
+## Running the application
+
+```bash
+$ export FLASK_APP = run.py
+
+$ export MODE = development
+
+$ flask run
+```
+
+## Endpoints Available
+
+| Method | Endpoint                        | Description                           |
+| ------ | ------------------------------- | ------------------------------------- |
+| POST   | /api/v1/auth/signup             | sign up a user                        |
+| POST   | /api/v1/auth/login              | login a user                          |
+| POST   | /api/v1/fooditems               | post a fooditem                       |
+| GET    | /api/v1/fooditems               | get all available fooditems           |
+| POST   | /api/v1/fooditems/<{id}>/orders | post an order on a specific food item |
+| GET    | /api/v1/fooditems/orders        | get the all food orders               |
+| PUT    | /api/v1/fooditems/orders/<{id}> | update on the status of an order      |
+| Get    | /api/v1/fooditems/orders/<{id}> | get a specific food order             |
+
+### Testing
+
+    nosetests
+
+    - Testing with coverage
+
+    nosetests --with-coverage --cover-package=app
+
+### Author
+
+James Macharia
