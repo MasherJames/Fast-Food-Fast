@@ -1,6 +1,7 @@
 import unittest
 import json
 from app import create_app
+from migrate import TablesSetup
 
 
 class TestUser(unittest.TestCase):
@@ -11,6 +12,9 @@ class TestUser(unittest.TestCase):
         self.client = self.app.test_client()
         self.app_context = self.app.app_context()
         self.app_context.push()
+
+    def tearDown(self):
+        self.app_context.pop()
 
     def signup(self):
         """ sign up function """
@@ -165,7 +169,3 @@ class TestUser(unittest.TestCase):
         self.assertEqual(res.status_code, 400)
         self.assertEqual(json.loads(res.data)[
                          'message'], "Enter a valid password")
-
-    def tearDown(self):
-        """ Teardown the app after testing """
-        self.app_context.pop()
