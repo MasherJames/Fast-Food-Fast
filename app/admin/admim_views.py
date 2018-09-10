@@ -1,6 +1,6 @@
 from flask_restful import Resource, reqparse
 from flask_jwt_extended import jwt_required
-from models.models import FoodItem, FoodItems, FoodOrder
+from models.models import FoodItem, FoodOrder
 from utils import validators
 
 
@@ -30,13 +30,15 @@ class Foods(Resource):
 
         food_item = FoodItem(name, description, price)
 
-        FoodItems.append(food_item)
+        food_item.add()
 
         return {"message": "Food item created successfully"}, 201
 
     @jwt_required
     def get(self):
         """ Get all food items """
+        FoodItems = FoodItem().get_all()
+        print(FoodItems)
         return {"Food Items": [food_item.serialize() for food_item in FoodItems]}, 200
 
 
