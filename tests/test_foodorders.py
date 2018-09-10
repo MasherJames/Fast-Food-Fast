@@ -1,6 +1,7 @@
 import unittest
 import json
 from app import create_app
+from migrate import TablesSetup
 
 
 class TestFoodOrders(unittest.TestCase):
@@ -11,6 +12,9 @@ class TestFoodOrders(unittest.TestCase):
         self.client = self.app.test_client()
         self.app_context = self.app.app_context()
         self.app_context.push()
+
+    def tearDown(self):
+        self.app_context.pop()
 
     def signup(self):
         """ sign up function """
