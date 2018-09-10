@@ -1,6 +1,7 @@
 import unittest
 import json
 from app import create_app
+from migrate import TablesSetup
 
 
 class TestFoodItems(unittest.TestCase):
@@ -13,7 +14,6 @@ class TestFoodItems(unittest.TestCase):
         self.app_context.push()
 
     def tearDown(self):
-        """ Teardown the app after testing """
         self.app_context.pop()
 
     def signup(self):
@@ -107,7 +107,7 @@ class TestFoodItems(unittest.TestCase):
                          'message'], "Enter a valid food name")
 
     def test_invalid_fooditem_description(self):
-        """ test to create a new food item """
+        """ test invalid food description """
         token = self.get_token()
 
         data = {
@@ -136,5 +136,4 @@ class TestFoodItems(unittest.TestCase):
             headers={'content-type': 'application/json',
                      'Authorization': f'Bearer {token}'}
         )
-
         self.assertEqual(res.status_code, 200)
