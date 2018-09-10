@@ -2,7 +2,7 @@ import datetime
 from flask_jwt_extended import create_access_token
 from flask_restful import Resource, reqparse
 from werkzeug.security import check_password_hash
-from models.models import User, users
+from models.models import User
 from utils import validators
 
 
@@ -41,7 +41,7 @@ class SignUp(Resource):
 
         user = User(username, email, password)
 
-        users.append(user)
+        user.add()
 
         return {"message": f"Account for {username} has been created successfully"}, 201
 
