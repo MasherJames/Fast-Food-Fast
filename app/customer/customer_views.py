@@ -1,7 +1,7 @@
 from flask_restful import Resource, reqparse
 from flask_jwt_extended import jwt_required
 
-from models.models import FoodOrder, FoodOrders, FoodItem
+from models.models import FoodOrder, FoodItem
 from utils import validators
 
 
@@ -25,7 +25,8 @@ class PostOrders(Resource):
             return {"message": "Enter a valid destination"}, 400
 
         food_order = FoodOrder(food_item.name, destination)
-        FoodOrders.append(food_order)
+
+        food_order.add()
 
         return {"message": "Food order placed succssesfully"}, 201
 
@@ -35,4 +36,5 @@ class GetOrders(Resource):
     @jwt_required
     def get(self):
         """ get all the orders """
+        FoodOrders = FoodOrder().get_all()
         return{"Food orders": [food_order.serialize() for food_order in FoodOrders]}, 200
