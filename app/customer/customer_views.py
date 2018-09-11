@@ -1,5 +1,5 @@
 from flask_restful import Resource, reqparse
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from models.models import FoodOrder, FoodItem
 from utils import validators
@@ -17,6 +17,8 @@ class PostOrders(Resource):
 
         destination = request_data['destination']
 
+        current_user = get_jwt_identity()
+
         food_item = FoodItem().get_by_id(food_id)
         if not food_item:
             return {"message": "Food item does not exist"}, 404
@@ -24,7 +26,7 @@ class PostOrders(Resource):
         if not validators.Validators().valid_inputs(destination):
             return {"message": "Enter a valid destination"}, 400
 
-        food_order = FoodOrder(food_item.name, destination)
+        food_order = FoodOrder(current_user, food_item.name, destination)
 
         food_order.add()
 
@@ -35,6 +37,38 @@ class GetOrders(Resource):
 
     @jwt_required
     def get(self):
-        """ get all the orders """
+        """ Fetch all the orders """
         FoodOrders = FoodOrder().get_all()
-        return{"Food orders": [food_order.serialize() for food_order in FoodOrders]}, 200
+        if FoodOrder:
+            return{"Food orders": [food_order.serialize() for food_order in FoodOrders]}, 200
+
+        return {"Message": "There are no available food orders now"}, 404
+
+
+class SpecificItem(Resource):
+
+    @jwt_required
+    def get(self, food_item_id):
+        """ Get a specific item """
+
+        food_item = FoodItem().get_by_id(food_item_id)
+
+        if food_item:
+            return food_item.serialize(), 200
+
+        return {"Message": "Food item does not exist"}, 404
+
+
+class SpecificCustomerOrders(Resource):
+
+    @jwt_required
+    def get(self):
+        """ Customer can fetch all orders under his username """
+        current_user = get_jwt_identity()
+
+        customer_orders = FoodOrder().get_by_requester(current_user)
+
+        if customer_orders:
+            return {"Food orders": [customer_order.serialize() for customer_order in customer_orders]}, 200
+
+        return {"Message": "You don't have any orders"}, 404

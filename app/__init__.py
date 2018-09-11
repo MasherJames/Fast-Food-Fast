@@ -3,7 +3,7 @@ from flask_restful import Api
 from flask_jwt_extended import JWTManager
 from instance.config import app_config
 from .admin.admim_views import Foods, SpecificOrder
-from .customer.customer_views import PostOrders, GetOrders
+from .customer.customer_views import PostOrders, SpecificItem, GetOrders, SpecificCustomerOrders
 from .auth.auth_views import Login, SignUp
 
 
@@ -35,7 +35,9 @@ def create_app(config_mode):
     auth.add_resource(SignUp, '/signup')
     auth.add_resource(Login, '/login')
 
+    customer.add_resource(SpecificItem, '/<int:food_item_id>')
     customer.add_resource(PostOrders, '/<int:food_id>/orders')
     customer.add_resource(GetOrders, '/orders')
+    customer.add_resource(SpecificCustomerOrders, '/orders/customer_name')
 
     return app

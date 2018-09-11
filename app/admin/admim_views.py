@@ -38,8 +38,9 @@ class Foods(Resource):
     def get(self):
         """ Get all food items """
         FoodItems = FoodItem().get_all()
-        print(FoodItems)
-        return {"Food Items": [food_item.serialize() for food_item in FoodItems]}, 200
+        if FoodItems:
+            return {"Food Items": [food_item.serialize() for food_item in FoodItems]}, 200
+        return {"message": "No food items available for now"}, 404
 
 
 class SpecificOrder(Resource):
