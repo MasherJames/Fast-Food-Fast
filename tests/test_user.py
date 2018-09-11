@@ -1,7 +1,7 @@
 import unittest
 import json
 from app import create_app
-from migrate import TablesSetup
+from db_test import migrate, drop
 
 
 class TestUser(unittest.TestCase):
@@ -10,11 +10,11 @@ class TestUser(unittest.TestCase):
         """ Setting up for testing """
         self.app = create_app("testing")
         self.client = self.app.test_client()
-        self.app_context = self.app.app_context()
-        self.app_context.push()
-
-    def tearDown(self):
-        self.app_context.pop()
+        # self.app_context = self.app.app_context()
+        # self.app_context.push()
+        with self.app.app_context():
+            drop()
+            migrate()
 
     def signup(self):
         """ sign up function """
@@ -169,3 +169,7 @@ class TestUser(unittest.TestCase):
         self.assertEqual(res.status_code, 400)
         self.assertEqual(json.loads(res.data)[
                          'message'], "Enter a valid password")
+
+    # def tearDown(self):
+    #     drop()
+    #     # self.app_context.pop()

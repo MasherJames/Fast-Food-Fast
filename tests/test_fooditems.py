@@ -1,7 +1,7 @@
 import unittest
 import json
 from app import create_app
-from migrate import TablesSetup
+from db_test import migrate, drop
 
 
 class TestFoodItems(unittest.TestCase):
@@ -10,11 +10,11 @@ class TestFoodItems(unittest.TestCase):
         """ Setting up for testing """
         self.app = create_app("testing")
         self.client = self.app.test_client()
-        self.app_context = self.app.app_context()
-        self.app_context.push()
-
-    def tearDown(self):
-        self.app_context.pop()
+        # self.app_context = self.app.app_context()
+        # self.app_context.push()
+        with self.app.app_context():
+            drop()
+            migrate()
 
     def signup(self):
         """ sign up function """
@@ -22,7 +22,6 @@ class TestFoodItems(unittest.TestCase):
             "username": "Masher123",
             "email": "jamesmash@gmail.com",
             "password": "Password123",
-            "is_admin": 1
         }
 
         res = self.client.post(
@@ -126,6 +125,20 @@ class TestFoodItems(unittest.TestCase):
         self.assertEqual(res.status_code, 400)
         self.assertEqual(json.loads(res.data)[
                          'message'], "Enter valid food description")
+
+    def test_get_specific_fooditem(self):
+        """ Test to get a specific food item """
+        token = self.get_token()
+
+        res = self.client.get(
+            "api/v1/fooditems/1",
+            headers={'content-type': 'application/json',
+                     'Authorization': f'Bearer {token}'}
+        )
+
+        print(res.data)
+
+        self.assertEqual(res.status_code, 200)
 
     def test_get_all_fooditems(self):
         """ Test to get all fooditems """

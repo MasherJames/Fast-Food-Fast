@@ -1,7 +1,7 @@
 import unittest
 import json
 from app import create_app
-from migrate import TablesSetup
+from db_test import migrate, drop
 
 
 class TestFoodOrders(unittest.TestCase):
@@ -10,11 +10,15 @@ class TestFoodOrders(unittest.TestCase):
         """ Setting up for testing """
         self.app = create_app("testing")
         self.client = self.app.test_client()
-        self.app_context = self.app.app_context()
-        self.app_context.push()
+        # self.app_context = self.app.app_context()
+        # self.app_context.push()
+        with self.app.app_context():
+            drop()
+            migrate()
 
-    def tearDown(self):
-        self.app_context.pop()
+    # def tearDown(self):
+    #     drop()
+    #     # self.app_context.pop()
 
     def signup(self):
         """ sign up function """
@@ -70,6 +74,8 @@ class TestFoodOrders(unittest.TestCase):
             headers={'content-type': 'application/json',
                      'Authorization': f'Bearer {token}'}
         )
+
+        print(res.data)
 
         self.assertEqual(res.status_code, 201)
         self.assertEqual(json.loads(res.data)[
@@ -162,3 +168,7 @@ class TestFoodOrders(unittest.TestCase):
         )
 
         self.assertEqual(res.status_code, 200)
+
+    # def tearDown(self):
+    #     drop()
+    #     # self.app_context.pop()
