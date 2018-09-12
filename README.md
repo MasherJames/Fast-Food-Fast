@@ -58,16 +58,25 @@ $ flask run
 
 ## Endpoints Available
 
-| Method | Endpoint                        | Description                           |
-| ------ | ------------------------------- | ------------------------------------- |
-| POST   | /api/v1/auth/signup             | sign up a user                        |
-| POST   | /api/v1/auth/login              | login a user                          |
-| POST   | /api/v1/fooditems               | post a fooditem                       |
-| GET    | /api/v1/fooditems               | get all available fooditems           |
-| POST   | /api/v1/fooditems/<{id}>/orders | post an order on a specific food item |
-| GET    | /api/v1/fooditems/orders        | get the all food orders               |
-| PUT    | /api/v1/fooditems/orders/<{id}> | update on the status of an order      |
-| Get    | /api/v1/fooditems/orders/<{id}> | get a specific food order             |
+| Method | Endpoint                                 | Description                                   |
+| ------ | ---------------------------------------- | --------------------------------------------- |
+| POST   | /api/v1/auth/signup                      | sign up a user                                |
+| POST   | /api/v1/auth/login                       | login a user                                  |
+| POST   | /api/v1/fooditems                        | post a fooditem                               |
+| GET    | /api/v1/fooditems                        | get all available fooditems                   |
+| POST   | /api/v1/fooditems/<{id}>/orders          | post an order on a specific food item         |
+| GET    | /api/v1/fooditems/orders                 | get the all food orders                       |
+| GET    | /api/v1/fooditems/orders/<{id}>          | get a specific food order                     |
+| GET    | /api/v1/fooditems/<{id}>                 | get a specific fooditem                       |
+| GET    | /api/v1/fooditems/orders/customer_name   | get all orders for a specific customer        |
+| DELETE | /api/v1/fooditems/<{id}>                 | delete a specific fooditem                    |
+| PUT    | /api/v1/fooditems/<{id}>                 | update an existing fooditem                   |
+| PUT    | /api/v1/fooditems/orders/<{id}>/accept   | update on the status of an order to accepted  |
+| PUT    | /api/v1/fooditems/orders/<{id}>/decline  | update on the status of an order to declined  |
+| PUT    | /api/v1/fooditems/orders/<{id}>/complete | update on the status of an order to completed |
+| GET    | /api/v1/fooditems/orders/accepted        | get the all accepted food orders              |
+| GET    | /api/v1/fooditems/orders/declined        | get the all declined food orders              |
+| GET    | /api/v1/fooditems/orders/completed       | get the all completed food orders             |
 
 ### Testing
 
