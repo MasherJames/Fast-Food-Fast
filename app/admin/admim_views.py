@@ -102,16 +102,89 @@ class SpecificOrder(Resource):
 
         return food_order.serialize(), 200
 
+
+class AcceptOrder(Resource):
+
     @jwt_required
     def put(self, food_order_id):
-        """ Update the status of an order """
+        """ Update the status of an order to accepted """
 
         food_order = FoodOrder().get_by_id(food_order_id)
 
         if not food_order:
             return {"message": "Food order does not exist"}, 404
 
-        if food_order.status == "pending":
-            food_order.status = "approved"
+        if food_order.status != "pending":
+            return {"message": f"Food order already {food_order.status}"}, 403
 
-        return food_order.serialize(), 200
+        food_order.accept_order(food_order_id)
+        return {"Message": "Food order accepted"}, 200
+
+
+class AcceptedOrders(Resource):
+    @jwt_required
+    def get(self):
+        ''' Get all accepted orders '''
+        accepted_orders = FoodOrder().get_accepted_orders()
+
+        if accepted_orders:
+            return {"Accepted Orders": [accepted_order.serialize() for accepted_order in accepted_orders]}, 200
+        return {"message": "there are no accepted orders now"}, 404
+
+
+class DeclineOrder(Resource):
+
+    @jwt_required
+    def put(self, food_order_id):
+        """ Update the status of an order to declined """
+
+        food_order = FoodOrder().get_by_id(food_order_id)
+
+        if not food_order:
+            return {"message": "Food order does not exist"}, 404
+
+        if food_order.status != "pending":
+            return {"message": f"Food order already {food_order.status}"}, 403
+
+        food_order.decline_order(food_order_id)
+        return {"Message": "Food order declined"}, 200
+
+
+class DeclinedOrders(Resource):
+    @jwt_required
+    def get(self):
+        ''' Get all declined orders '''
+        declined_orders = FoodOrder().get_declined_orders()
+
+        if declined_orders:
+            return {"Declined Orders": [declined_order.serialize() for declined_order in declined_orders]}, 200
+        return {"message": "there are no declined orders now"}, 404
+
+
+class CompleteOrder(Resource):
+
+    @jwt_required
+    def put(self, food_order_id):
+        """ Update the status of an order to completed if it was accepted """
+
+        food_order = FoodOrder().get_by_id(food_order_id)
+
+        if not food_order:
+            return {"message": "Food order does not exist"}, 404
+
+        if food_order.status != "accepted":
+            return {"message": f"You cannot complete this order, it is already {food_order.status}"}, 403
+
+        food_order.complete_accepted_order(food_order_id)
+        return {"Message": "Food order completed"}, 200
+
+
+class CompletedOrders(Resource):
+    @jwt_required
+    def get(self):
+        ''' Get all completed orders '''
+        complete_orders = FoodOrder().get_completed_orders()
+
+        if complete_orders:
+            return {"Complete Orders": [complete_order.serialize() for complete_order in complete_orders]}, 200
+        return {"message": "there are no complete orders now"}, 404
