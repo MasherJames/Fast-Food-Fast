@@ -3,9 +3,16 @@ language: python
 python:
   - "3.6"
 
+services:
+  - postgresql
+
 install:
   - pip install -r requirements.txt
   - pip install coveralls
+
+before_script:
+  - psql -c 'CREATE DATABASE fast_food_test;' -U postgres
+  - psql -c "CREATE USER fast_foods_test_user with password 'fastfoodstest';" -U postgres
 
 script:
   - nosetests --with-coverage --cover-package=app
