@@ -65,7 +65,7 @@ class Login(Resource):
         user = User().get_by_username(username)
 
         if user and check_password_hash(user.password_hash, password):
-            expires = datetime.timedelta(minutes=30)
+            expires = datetime.timedelta(seconds=3600)
             token = create_access_token(
                 user.username, expires_delta=expires)
             return {'token': token, 'message': f'You were successfully logged in {username}'}, 200
