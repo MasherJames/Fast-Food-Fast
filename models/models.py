@@ -319,6 +319,81 @@ class FoodOrder(FastFoodsDb):
             return [self.map_foodorder(food_order) for food_order in food_orders]
         return None
 
+    def accept_order(self, order_id):
+        """ Accept an order """
+        cur = self.conn.cursor()
+        cur.execute("""
+        UPDATE foodorders SET status=%s WHERE id=%s
+                    """, ('accepted', order_id)
+                    )
+        self.conn.commit()
+        cur.close()
+
+    def decline_order(self, order_id):
+        """ Decline an order """
+        cur = self.conn.cursor()
+        cur.execute("""
+        UPDATE foodorders SET status=%s WHERE id=%s
+                    """, ('declined', order_id)
+                    )
+        self.conn.commit()
+        cur.close()
+
+    def complete_accepted_order(self, order_id):
+        """ Complete an accepted order """
+        cur = self.conn.cursor()
+        cur.execute("""
+        UPDATE foodorders SET status=%s WHERE id=%s
+                    """, ('completed', order_id)
+                    )
+        self.conn.commit()
+        cur.close()
+
+    def get_accepted_orders(self):
+        ''' Get all orders that are accepted '''
+        cur = self.conn.cursor()
+        cur.execute("SELECT * FROM foodorders WHERE status=%s",
+                    ('accepted',))
+
+        accepted_food_orders = cur.fetchall()
+
+        self.conn.commit()
+        cur.close()
+
+        if accepted_food_orders:
+            return [self.map_foodorder(food_order) for food_order in accepted_food_orders]
+        return None
+
+    def get_declined_orders(self):
+        ''' Get all declined orders '''
+        cur = self.conn.cursor()
+        cur.execute("SELECT * FROM foodorders WHERE status=%s",
+                    ('declined',))
+
+        declined_food_orders = cur.fetchall()
+
+        self.conn.commit()
+        cur.close()
+
+        if declined_food_orders:
+            return [self.map_foodorder(food_order) for food_order in declined_food_orders]
+        return None
+
+    def get_completed_orders(self):
+        ''' Get all completed orders '''
+        cur = self.conn.cursor()
+        cur.execute("SELECT * FROM foodorders WHERE status=%s",
+                    ('completed',))
+
+        completed_food_orders = cur.fetchall()
+
+        self.conn.commit()
+        cur.close()
+
+        if completed_food_orders:
+            return [self.map_foodorder(food_order) for food_order in completed_food_orders]
+        return None
+
     def map_foodorder(self, data):
         ''' Map a user to an object '''
         order = FoodOrder(
