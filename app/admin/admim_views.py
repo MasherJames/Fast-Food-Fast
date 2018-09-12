@@ -43,6 +43,53 @@ class Foods(Resource):
         return {"message": "No food items available for now"}, 404
 
 
+class SpecificItem(Resource):
+
+    @jwt_required
+    def get(self, food_item_id):
+        """ Get a specific item """
+
+        food_item = FoodItem().get_by_id(food_item_id)
+
+        if food_item:
+            return food_item.serialize(), 200
+
+        return {"Message": "Food item does not exist"}, 404
+
+    @jwt_required
+    def delete(self, food_item_id):
+        """ Admin can delete a specific food item """
+        food_item = FoodItem().get_by_id(food_item_id)
+
+        if food_item:
+            food_item.delete(food_item_id)
+            return {"message": "Food item deleted successfully"}, 200
+
+        return {"message": "Food item does not exist"}, 404
+
+    @jwt_required
+    def put(self, food_item_id):
+        """ Update an existing food item """
+        request_data = Foods.parser.parse_args()
+
+        name = request_data['name']
+        description = request_data['description']
+        price = request_data['price']
+
+        if not validators.Validators().valid_inputs(name):
+            return {"message": "Invalid food name"}, 400
+
+        if not validators.Validators().valid_inputs(description):
+            return {"message": "Invalid food description"}, 400
+
+        if FoodItem().get_by_id(food_item_id):
+            updated_food_item = FoodItem(name, description, price)
+            updated_food_item.update(food_item_id)
+            return {"message": "Food item updated successfully"}, 200
+
+        return {"message": "Food item does not exist"}, 404
+
+
 class SpecificOrder(Resource):
 
     @jwt_required
