@@ -45,20 +45,6 @@ class GetOrders(Resource):
         return {"Message": "There are no available food orders now"}, 404
 
 
-class SpecificItem(Resource):
-
-    @jwt_required
-    def get(self, food_item_id):
-        """ Get a specific item """
-
-        food_item = FoodItem().get_by_id(food_item_id)
-
-        if food_item:
-            return food_item.serialize(), 200
-
-        return {"Message": "Food item does not exist"}, 404
-
-
 class SpecificCustomerOrders(Resource):
 
     @jwt_required
