@@ -18,7 +18,7 @@ env:
   - DATABASE_TESTING_URL="postgresql://fast_foods_test_user:fastfoodstest@localhost/fast_food_test"
 
 script:
-  - nosetests --with-coverage --cover-package=tests
+  - nosetests --with-coverage --cover-package=app
 
 after_success:
   - coveralls
