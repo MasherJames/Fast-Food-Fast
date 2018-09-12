@@ -192,6 +192,24 @@ class FoodItem(FastFoodsDb):
             return [self.map_fooditem(food_item) for food_item in food_items]
         return None
 
+    def delete(self, food_item_id):
+        """ Delete a specific food item """
+        cur = self.conn.cursor()
+        cur.execute("DELETE FROM fooditems WHERE id=%s", (food_item_id,))
+
+        self.conn.commit()
+        cur.close()
+
+    def update(self, food_item_id):
+        """ Update an existing food item """
+        cur = self.conn.cursor()
+        cur.execute("""
+        UPDATE fooditems SET name=%s, description=%s, price=%s WHERE id=%s
+                    """, (self.name, self.description, self.price, food_item_id)
+                    )
+        self.conn.commit()
+        cur.close()
+
     def map_fooditem(self, data):
         ''' Map a user to an object '''
         item = FoodItem(name=data[1], description=data[2], price=data[3])
