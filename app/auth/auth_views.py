@@ -1,7 +1,7 @@
 import datetime
 from flask_jwt_extended import create_access_token
 from flask_restful import Resource, reqparse
-from werkzeug.security import check_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 from models.models import User
 from utils import validators
 
@@ -61,6 +61,12 @@ class Login(Resource):
 
         username = request_data['username']
         password = request_data['password']
+
+        if not validators.Validators().valid_username(username):
+            return {"message": "Invalid username"}, 400
+
+        if not validators.Validators().valid_password(password):
+            return {"message": "Enter a valid password"}, 400
 
         user = User().get_by_username(username)
 
