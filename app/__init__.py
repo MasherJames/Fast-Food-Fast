@@ -2,7 +2,8 @@ from flask import Flask
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
 from instance.config import app_config
-from .admin.admim_views import Foods, SpecificOrder, SpecificItem
+from .admin.admim_views import Foods, SpecificOrder, SpecificItem, AcceptOrder, DeclineOrder, CompleteOrder, AcceptedOrders, DeclinedOrders, CompletedOrders
+
 
 from .customer.customer_views import PostOrders, GetOrders, SpecificCustomerOrders
 from .auth.auth_views import Login, SignUp
@@ -33,6 +34,15 @@ def create_app(config_mode):
     admin.add_resource(Foods, '/fooditems')
     admin.add_resource(SpecificOrder, '/fooditems/orders/<int:food_order_id>')
     admin.add_resource(SpecificItem, '/fooditems/<int:food_item_id>')
+    admin.add_resource(
+        AcceptOrder, '/fooditems/orders/<int:food_order_id>/accept')
+    admin.add_resource(
+        DeclineOrder, '/fooditems/orders/<int:food_order_id>/decline')
+    admin.add_resource(
+        CompleteOrder, '/fooditems/orders/<int:food_order_id>/complete')
+    admin.add_resource(AcceptedOrders, '/fooditems/orders/accepted')
+    admin.add_resource(DeclinedOrders, '/fooditems/orders/declined')
+    admin.add_resource(CompletedOrders, '/fooditems/orders/completed')
 
     auth.add_resource(SignUp, '/signup')
     auth.add_resource(Login, '/login')
