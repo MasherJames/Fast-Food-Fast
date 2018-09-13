@@ -1,7 +1,20 @@
+from functools import wraps
 from flask_restful import Resource, reqparse
-from flask_jwt_extended import jwt_required
-from models.models import FoodItem, FoodOrder
+from flask_jwt_extended import jwt_required, get_jwt_identity
+from models.models import FoodItem, FoodOrder, User
 from utils import validators
+
+
+def admin_access(f):
+    ''' Restrict access if not admin '''
+    @wraps(f)
+    def wrapper_function(*args, **kwargs):
+        user = User().get_by_username(get_jwt_identity())
+        if not user.is_admin:
+            return {'message': 'Your cannot access this level'}, 401
+        return f(*args, **kwargs)
+
+    return wrapper_function
 
 
 class Foods(Resource):
@@ -14,6 +27,7 @@ class Foods(Resource):
                         help='This field cannot be left blank')
 
     @jwt_required
+    @admin_access
     def post(self):
         """ Create a new food item """
         request_data = Foods.parser.parse_args()
@@ -57,6 +71,7 @@ class SpecificItem(Resource):
         return {"Message": "Food item does not exist"}, 404
 
     @jwt_required
+    @admin_access
     def delete(self, food_item_id):
         """ Admin can delete a specific food item """
         food_item = FoodItem().get_by_id(food_item_id)
@@ -68,6 +83,7 @@ class SpecificItem(Resource):
         return {"message": "Food item does not exist"}, 404
 
     @jwt_required
+    @admin_access
     def put(self, food_item_id):
         """ Update an existing food item """
         request_data = Foods.parser.parse_args()
@@ -106,6 +122,7 @@ class SpecificOrder(Resource):
 class AcceptOrder(Resource):
 
     @jwt_required
+    @admin_access
     def put(self, food_order_id):
         """ Update the status of an order to accepted """
 
@@ -123,6 +140,7 @@ class AcceptOrder(Resource):
 
 class AcceptedOrders(Resource):
     @jwt_required
+    @admin_access
     def get(self):
         ''' Get all accepted orders '''
         accepted_orders = FoodOrder().get_accepted_orders()
@@ -135,6 +153,7 @@ class AcceptedOrders(Resource):
 class DeclineOrder(Resource):
 
     @jwt_required
+    @admin_access
     def put(self, food_order_id):
         """ Update the status of an order to declined """
 
@@ -152,6 +171,7 @@ class DeclineOrder(Resource):
 
 class DeclinedOrders(Resource):
     @jwt_required
+    @admin_access
     def get(self):
         ''' Get all declined orders '''
         declined_orders = FoodOrder().get_declined_orders()
@@ -164,6 +184,7 @@ class DeclinedOrders(Resource):
 class CompleteOrder(Resource):
 
     @jwt_required
+    @admin_access
     def put(self, food_order_id):
         """ Update the status of an order to completed if it was accepted """
 
@@ -181,6 +202,7 @@ class CompleteOrder(Resource):
 
 class CompletedOrders(Resource):
     @jwt_required
+    @admin_access
     def get(self):
         ''' Get all completed orders '''
         complete_orders = FoodOrder().get_completed_orders()
