@@ -39,10 +39,10 @@ class GetOrders(Resource):
     def get(self):
         """ Fetch all the orders """
         FoodOrders = FoodOrder().get_all()
-        if FoodOrder:
-            return{"Food orders": [food_order.serialize() for food_order in FoodOrders]}, 200
 
-        return {"Message": "There are no available food orders now"}, 404
+        if FoodOrders is None:
+            return {"Message": "There are no available food orders now"}, 404
+        return{"Food orders": [food_order.serialize() for food_order in FoodOrders]}, 200
 
 
 class SpecificCustomerOrders(Resource):

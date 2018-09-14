@@ -30,6 +30,7 @@ class Foods(Resource):
     @admin_access
     def post(self):
         """ Create a new food item """
+
         request_data = Foods.parser.parse_args()
 
         name = request_data['name']
@@ -145,9 +146,9 @@ class AcceptedOrders(Resource):
         ''' Get all accepted orders '''
         accepted_orders = FoodOrder().get_accepted_orders()
 
-        if accepted_orders:
-            return {"Accepted Orders": [accepted_order.serialize() for accepted_order in accepted_orders]}, 200
-        return {"message": "there are no accepted orders now"}, 404
+        if accepted_orders is None:
+            return {"message": "there are no accepted orders now"}, 404
+        return {"Accepted Orders": [accepted_order.serialize() for accepted_order in accepted_orders]}, 200
 
 
 class DeclineOrder(Resource):

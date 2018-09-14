@@ -10,8 +10,6 @@ class TestUser(unittest.TestCase):
         """ Setting up for testing """
         self.app = create_app("testing")
         self.client = self.app.test_client()
-        # self.app_context = self.app.app_context()
-        # self.app_context.push()
         with self.app.app_context():
             drop()
             migrate()
@@ -46,6 +44,11 @@ class TestUser(unittest.TestCase):
         )
 
         return res
+
+    def test_user_signup(self):
+        """ Test new user signup """
+        res = self.signup()
+        self.assertEqual(res.status_code, 201)
 
     def test_login(self):
         """ Test for login """
@@ -169,7 +172,3 @@ class TestUser(unittest.TestCase):
         self.assertEqual(res.status_code, 400)
         self.assertEqual(json.loads(res.data)[
                          'message'], "Enter a valid password")
-
-    # def tearDown(self):
-    #     drop()
-    #     # self.app_context.pop()
