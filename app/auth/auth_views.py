@@ -15,6 +15,8 @@ class SignUp(Resource):
                         help='This field cannot be left blank')
     parser.add_argument('password', type=str, required=True,
                         help='This field cannot be left blank')
+    parser.add_argument('is_admin', type=bool, required=True,
+                        help='This field cannot be left blank')
 
     def post(self):
         """ SignUp a new user """
@@ -23,6 +25,7 @@ class SignUp(Resource):
         username = request_data['username']
         email = request_data['email']
         password = request_data['password']
+        is_admin = request_data['is_admin']
 
         if not validators.Validators().valid_username(username):
             return {"message": "Invalid username"}, 400
@@ -39,7 +42,7 @@ class SignUp(Resource):
         if User().get_by_email(email):
             return {"message": f"User with email {email} already exists"}, 400
 
-        user = User(username, email, password)
+        user = User(username, email, password, is_admin)
 
         user.add()
 
