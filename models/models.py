@@ -20,7 +20,7 @@ class FastFoodsDb:
 
 class User(FastFoodsDb):
 
-    def __init__(self, username=None, email=None, password=None, is_admin=False):
+    def __init__(self, username=None, email=None, password=None, is_admin=None):
         super().__init__()
         self.username = username
         self.email = email
@@ -66,6 +66,7 @@ class User(FastFoodsDb):
         cur.execute("SELECT * FROM users WHERE id=%s", (user_id,))
 
         user = cur.fetchone()
+        print(user)
 
         self.conn.commit()
         cur.close()
@@ -158,9 +159,10 @@ class FoodItem(FastFoodsDb):
         """ Add a fooditem to the fooditems table """
         cur = self.conn.cursor()
         cur.execute(
-            """INSERT INTO fooditems(name, description, price, date) VALUES(%s,%s, %s, %s)""",
+            """INSERT INTO fooditems(name, description, price, date) VALUES(%s, %s, %s, %s)""",
             (self.name, self.description, self.price, self.date)
         )
+
         self.conn.commit()
         cur.close()
 
