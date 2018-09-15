@@ -22,5 +22,12 @@ def drop():
     FoodOrder().drop_table()
 
 
+@app.cli.command()
+def create_admin():
+    admin = User(username='AdminUser', email='admin@gmail.com',
+                 password='pbkdf2:sha256:50000$s3wjDL5p$15bfdf53ba388bb76fdbd0ec5f212abfc10d2731037f1c9716c94945e150d013', is_admin=True)
+    admin.add()
+
+
 if __name__ == '__main__':
     app.run()
