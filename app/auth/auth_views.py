@@ -1,8 +1,8 @@
 import datetime
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_access_token, jwt_required, get_raw_jwt
 from flask_restful import Resource, reqparse
 from werkzeug.security import check_password_hash, generate_password_hash
-from models.models import User
+from models.models import User, Blacklist
 from utils import validators
 
 
@@ -73,9 +73,27 @@ class Login(Resource):
 
         user = User().get_by_username(username)
 
-        if user and check_password_hash(user.password_hash, password):
-            expires = datetime.timedelta(seconds=3600)
-            token = create_access_token(
-                user.username, expires_delta=expires)
-            return {'token': token, 'message': f'You were successfully logged in {username}'}, 200
-        return {'message': 'user not found'}, 404
+        if not user:
+            return {'message': f'user {username} does not exist'}, 404
+
+        if not check_password_hash(user.password_hash, password):
+            return {'message': f'Password for {username} is incorrect'}
+
+        expires = datetime.timedelta(seconds=3600)
+        token = create_access_token(
+            user.username, expires_delta=expires)
+        return {'token': token, 'message': f'You were successfully logged in {username}'}, 200
+
+
+# class Logout(Resource):
+
+#     @jwt_required
+#     def post(self):
+#         """ Logout a user """
+#         jti = get_raw_jwt()['jti']
+#         try:
+#             revoked_token = Blacklist(jti)
+#             revoked_token.add()
+#             return {'message': 'successfully logged out'}, 200
+#         except:
+#             return {"message": "Unable to log out user"}, 500

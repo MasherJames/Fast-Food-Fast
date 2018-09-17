@@ -32,7 +32,7 @@ class User(FastFoodsDb):
         cur = self.conn.cursor()
         cur.execute(
             '''
-            CREATE TABLE users(
+            CREATE TABLE IF NOT EXISTS users(
                 id serial PRIMARY KEY,
                 username VARCHAR NOT NULL UNIQUE,
                 email VARCHAR NOT NULL UNIQUE,
@@ -137,7 +137,7 @@ class FoodItem(FastFoodsDb):
         cur = self.conn.cursor()
         cur.execute(
             '''
-            CREATE TABLE fooditems(
+            CREATE TABLE IF NOT EXISTS fooditems(
                 id serial PRIMARY KEY,
                 name VARCHAR NOT NULL ,
                 description VARCHAR NOT NULL,
@@ -245,7 +245,7 @@ class FoodOrder(FastFoodsDb):
         cur = self.conn.cursor()
         cur.execute(
             '''
-            CREATE TABLE foodorders(
+            CREATE TABLE IF NOT EXISTS foodorders(
                 id serial PRIMARY KEY,
                 ordered_by VARCHAR NOT NULL,
                 order_name VARCHAR NOT NULL,
@@ -417,3 +417,49 @@ class FoodOrder(FastFoodsDb):
             status=self.status,
             date=str(self.date)
         )
+
+
+# class Blacklist(FastFoodsDb):
+#     def __init__(self, token=None):
+#         super().__init__()
+#         self.token = token
+
+#     def create_table(self):
+#         ''' Create table to store blacklisted tokens '''
+#         cur = self.conn.cursor()
+#         cur.execute(
+#             '''
+#             CREATE TABLE IF NOT EXISTS tokensblacklist(
+#                 id serial PRIMARY KEY,
+#                 token varchar
+#             )
+#             '''
+#         )
+#         self.conn.commit()
+#         cur.close()
+
+#     def drop_table(self):
+#         ''' Drop blacklisted token table '''
+#         cur = self.conn.cursor()
+#         cur.execute('DROP TABLE IF EXISTS tokensblacklist')
+#         self.conn.commit()
+#         cur.close()
+
+#     def add(self):
+#         ''' Add token to the blacklist table '''
+#         cur = self.conn.cursor()
+#         cur.execute(
+#             """INSERT INTO tokensblacklist(token)
+#             VALUES(%s)
+#             """,
+#             (self.token,)
+#         )
+#         self.conn.commit()
+#         cur.close()
+
+#     def is_jti_blacklisted(self, jti):
+#         ''' method to check if the token is revoked '''
+#         cur = self.conn.cursor()
+#         cur.execute("SELECT * FROM tokensblacklist WHERE token=%s", (jti,))
+#         self.conn.commit()
+#         cur.close()

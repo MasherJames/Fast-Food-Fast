@@ -115,7 +115,8 @@ class TestUser(unittest.TestCase):
         )
 
         self.assertEqual(res.status_code, 404)
-        self.assertEqual(json.loads(res.data)['message'], "user not found")
+        self.assertEqual(json.loads(res.data)[
+                         'message'], "user Baraka123 does not exist")
 
     def test_invalid_username(self):
         """ Test invalid username on signup """
