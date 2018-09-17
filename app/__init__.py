@@ -6,7 +6,7 @@ from .admin.admim_views import Foods, SpecificOrder, SpecificItem, AcceptOrder, 
 
 
 from .customer.customer_views import PostOrders, GetOrders, SpecificCustomerOrders
-from .auth.auth_views import Login, SignUp, Logout
+from .auth.auth_views import Login, SignUp
 # from models.models import Blacklist
 
 
@@ -56,7 +56,7 @@ def create_app(config_mode):
 
     auth.add_resource(SignUp, '/signup')
     auth.add_resource(Login, '/login')
-    auth.add_resource(Logout, '/logout')
+    # auth.add_resource(Logout, '/logout')
 
     customer.add_resource(PostOrders, '/<int:food_id>/orders')
     customer.add_resource(GetOrders, '/orders')
