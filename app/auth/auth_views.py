@@ -2,7 +2,7 @@ import datetime
 from flask_jwt_extended import create_access_token, jwt_required, get_raw_jwt
 from flask_restful import Resource, reqparse
 from werkzeug.security import check_password_hash, generate_password_hash
-from models.models import User, Blacklist
+from models.models import User
 from utils import validators
 
 
